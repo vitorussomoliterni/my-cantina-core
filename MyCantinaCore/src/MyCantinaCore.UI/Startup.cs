@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using MyCantinaCore.UI.Data;
 using MyCantinaCore.UI.Models;
 using MyCantinaCore.UI.Services;
+using MyCantinaCore.DataAccess.Models;
 
 namespace MyCantinaCore.UI
 {
@@ -45,8 +46,8 @@ namespace MyCantinaCore.UI
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<MyCantinaCoreDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString(@"Server=(localdb)\mssqllocaldb;Database=MyCantinaCoreDb;Trusted_Connection=True;")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
