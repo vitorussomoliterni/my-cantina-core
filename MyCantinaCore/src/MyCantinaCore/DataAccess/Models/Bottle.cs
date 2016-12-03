@@ -7,7 +7,7 @@ namespace MyCantinaCore.DataAccess.Models
     {
         public Bottle()
         {
-            GrapeVarieties = new List<GrapeVariety>();
+            BottleGrapeVarieties = new List<BottleGrapeVariety>();
             ConsumerBottles = new List<ConsumerBottle>();
         }
 
@@ -25,7 +25,7 @@ namespace MyCantinaCore.DataAccess.Models
         [Required]
         public string Country { get; set; }
         [Required]
-        public List<GrapeVariety> GrapeVarieties { get; set; }
+        public List<BottleGrapeVariety> BottleGrapeVarieties { get; set; }
         public List<ConsumerBottle> ConsumerBottles { get; set; }
         [Required]
         public double AverageRating { get; set; }

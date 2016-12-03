@@ -44,14 +44,14 @@ namespace MyCantinaCore.UI
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
+            //services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddDbContext<MyCantinaCoreDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString(@"Server=(localdb)\mssqllocaldb;Database=MyCantinaCoreDb;Trusted_Connection=True;")));
+                options.UseSqlServer(@"Data Source=(LocalDb)\mssqllocaldb;Initial Catalog=MyCantinaCoreDb;Integrated Security=true;"));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+                //.AddEntityFrameworkStores<ApplicationDbContext>()
+                //.AddDefaultTokenProviders();
 
             services.AddMvc();
 

@@ -12,6 +12,7 @@ namespace MyCantinaCore.DataAccess.Models
         public DbSet<ConsumerBottle> ConsumerBottles { get; set; }
         public DbSet<GrapeVariety> GrapeVarieties { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<BottleGrapeVariety> BottleGrapeVarieties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,9 @@ namespace MyCantinaCore.DataAccess.Models
 
             modelBuilder.Entity<Review>()
                 .HasKey(r => new { r.BottleId, r.ConsumerId });
+
+            modelBuilder.Entity<BottleGrapeVariety>()
+                .HasKey(bgr => new { bgr.BottleId, bgr.GrapeVarietyId });
         }
     }
 }
