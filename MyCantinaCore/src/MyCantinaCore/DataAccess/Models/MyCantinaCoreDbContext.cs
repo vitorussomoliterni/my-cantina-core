@@ -4,6 +4,9 @@ namespace MyCantinaCore.DataAccess.Models
 {
     public class MyCantinaCoreDbContext : DbContext
     {
+        public MyCantinaCoreDbContext(DbContextOptions<MyCantinaCoreDbContext> options)
+            : base(options)
+        { }
         public DbSet<Bottle> Bottles { get; set; }
         public DbSet<Consumer> Consumers { get; set; }
         public DbSet<ConsumerBottle> ConsumerBottles { get; set; }
