@@ -13,6 +13,7 @@ using MyCantinaCore.UI.Data;
 using MyCantinaCore.UI.Models;
 using MyCantinaCore.UI.Services;
 using MyCantinaCore.DataAccess.Models;
+using MyCantinaCore.Services;
 
 namespace MyCantinaCore.UI
 {
@@ -54,6 +55,7 @@ namespace MyCantinaCore.UI
                 //.AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.AddScoped<BottleApplicationService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
