@@ -100,10 +100,24 @@ namespace MyCantinaCore.Test
                 // SUT
                 await service.AddBottle(command);
 
-                var actualBottle = await context.Bottles.FirstOrDefaultAsync();
+                var actualBottle = await context.Bottles.Include(b => b.BottleGrapeVarieties).FirstOrDefaultAsync();
 
                 // Verify Outcome
                 Assert.NotEmpty(context.Bottles);
+                Assert.Equal(1, context.Bottles.Count());
+                Assert.NotNull(actualBottle);
+                Assert.Equal(expectedBottle.Id, actualBottle.Id);
+                Assert.Equal(expectedBottle.Name, actualBottle.Name);
+                Assert.Equal(expectedBottle.Year, actualBottle.Year);
+                Assert.Equal(expectedBottle.Producer, actualBottle.Producer);
+                Assert.Equal(expectedBottle.Description, actualBottle.Description);
+                Assert.Equal(expectedBottle.WineType, actualBottle.WineType);
+                Assert.Equal(expectedBottle.Region, actualBottle.Region);
+                Assert.Equal(expectedBottle.Country, actualBottle.Country);
+                Assert.Equal(expectedBottle.AverageRating, actualBottle.AverageRating);
+                Assert.NotEmpty(actualBottle.BottleGrapeVarieties);
+                Assert.Equal(actualBottle.BottleGrapeVarieties.FirstOrDefault().GrapeVariety, await context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == 1));
+                Assert.Equal(actualBottle.BottleGrapeVarieties.LastOrDefault().GrapeVariety, await context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == 2));
             }
         }
     }
