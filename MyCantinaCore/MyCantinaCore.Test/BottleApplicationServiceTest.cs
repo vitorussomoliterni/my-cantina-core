@@ -34,7 +34,7 @@ namespace MyCantinaCore.Test
         {
             var bottle = new Bottle()
             {
-                Name = "Terra rossa",
+                Name = "Terra Rossa",
                 Year = "2014",
                 Producer = "Producer of Fine Wine",
                 Description = "A robust red, for pasta lovers",
@@ -59,7 +59,7 @@ namespace MyCantinaCore.Test
 
                 var command = new AddBottleCommand()
                 {
-                    Name = "Terra rossa",
+                    Name = "Terra Rossa",
                     Year = "2014",
                     Producer = "Producer of Fine Wine",
                     Description = "A robust red, for pasta lovers",
@@ -92,7 +92,7 @@ namespace MyCantinaCore.Test
                     Producer = "Producer of Fine Wine",
                     Description = "A robust red, for pasta lovers",
                     WineType = "Red",
-                    Region = "Vulture",
+                    Region = "Basilicata",
                     Country = "Italy",
                     AverageRating = 0
                 };
