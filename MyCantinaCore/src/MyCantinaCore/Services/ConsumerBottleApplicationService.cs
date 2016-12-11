@@ -1,4 +1,5 @@
-﻿using MyCantinaCore.Commands.ConsumerBottle;
+﻿using Microsoft.EntityFrameworkCore;
+using MyCantinaCore.Commands.ConsumerBottle;
 using MyCantinaCore.DataAccess.Models;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,12 @@ namespace MyCantinaCore.Services
 
         public async Task<ConsumerBottle> AddConsumerBottle(ConsumerBottleCommand command)
         {
+            var consumer = await _context.Consumers.FirstOrDefaultAsync(c => c.Id == command.ConsumerId);
+            var bottle = await _context.Bottles.FirstOrDefaultAsync(b => b.Id == command.BottleId);
+
+            if (consumer == null || bottle == null)
+                throw new InvalidOperationException($"No consumer bottle found for consumer id {command.ConsumerId} and bottle id {command.BottleId}");
+
             var consumerBottle = new ConsumerBottle()
             {
                 ConsumerId = command.ConsumerId,
