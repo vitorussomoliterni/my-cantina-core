@@ -111,5 +111,77 @@ namespace MyCantinaCore.Test
                 Assert.Equal(actualBottle.BottleGrapeVarieties.LastOrDefault().GrapeVariety, await context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == 2));
             }
         }
+
+        [Fact]
+        public async static Task UpdateBottleTest_ShouldUpdateBottleInDb()
+        {
+            var options = CreateNewContextOptions();
+
+            using (var context = new MyCantinaCoreDbContext(options))
+            {
+                // Fixture
+                var service = new BottleApplicationService(context);
+
+                var originalBottle = CreateNewBotle();
+
+                await context.GrapeVarieties.AddAsync(new GrapeVariety()
+                {
+                    Name = "Aglianico",
+                    Colour = "Red"
+                });
+
+                await context.GrapeVarieties.AddAsync(new GrapeVariety()
+                {
+                    Name = "Merlot",
+                    Colour = "Red"
+                });
+
+                originalBottle.BottleGrapeVarieties.Add(new BottleGrapeVariety()
+                {
+                    BottleId = 1,
+                    GrapeVarietyId = 1
+                });
+
+                await context.Bottles.AddAsync(originalBottle);
+
+                await context.SaveChangesAsync();
+
+                var command = new UpdateBottleCommand()
+                {
+                    Id = 1,
+                    Name = "Fall Song",
+                    Year = "2015",
+                    Producer = "The farmer",
+                    Description = "A light rosé, for fall evenings",
+                    WineType = "Rosé",
+                    Region = "Orange County",
+                    Country = "Australia"
+                };
+
+                command.GrapeVarietyIds.Add(2);
+
+                // S.U.T.
+
+                await service.UpdateBottle(command);
+
+                var actualBottle = await context.Bottles.FirstOrDefaultAsync();
+
+                // Verify Outcome
+                Assert.NotEmpty(context.Bottles);
+                Assert.Equal(1, context.Bottles.Count());
+                Assert.NotNull(actualBottle);
+                Assert.Equal(command.Id, actualBottle.Id);
+                Assert.Equal(command.Name, actualBottle.Name);
+                Assert.Equal(command.Year, actualBottle.Year);
+                Assert.Equal(command.Producer, actualBottle.Producer);
+                Assert.Equal(command.Description, actualBottle.Description);
+                Assert.Equal(command.WineType, actualBottle.WineType);
+                Assert.Equal(command.Region, actualBottle.Region);
+                Assert.Equal(command.Country, actualBottle.Country);
+                Assert.NotEmpty(actualBottle.BottleGrapeVarieties);
+                Assert.Equal(1, actualBottle.BottleGrapeVarieties.Count);
+                Assert.Equal(actualBottle.BottleGrapeVarieties.FirstOrDefault().GrapeVariety, await context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == 2));
+            }
+        }
     }
 }
