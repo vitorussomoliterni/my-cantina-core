@@ -9,6 +9,7 @@ namespace MyCantinaCore.DataAccess.Models
         {
             BottleGrapeVarieties = new List<BottleGrapeVariety>();
             ConsumerBottles = new List<ConsumerBottle>();
+            Reviews = new List<Review>();
         }
 
         public int Id { get; set; }
@@ -29,5 +30,6 @@ namespace MyCantinaCore.DataAccess.Models
         public List<ConsumerBottle> ConsumerBottles { get; set; }
         [Required]
         public double AverageRating { get; set; }
+        public List<Review> Reviews { get; set; }
     }
 }
