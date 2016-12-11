@@ -78,7 +78,7 @@ namespace MyCantinaCore.Services
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<ConsumerBottle> GetAllConsumerBottles(int consumerId)
+        public IQueryable<ConsumerBottle> GetAllConsumerBottlesByConsumerId(int consumerId)
         {
             var consumerBottles = _context.ConsumerBottles.Where(cb => cb.ConsumerId == consumerId);
 
