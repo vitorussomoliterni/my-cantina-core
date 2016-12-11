@@ -44,6 +44,12 @@ namespace MyCantinaCore.Services
 
         public async Task<ConsumerBottle> UpdateConsumerBottle(ConsumerBottleCommand command)
         {
+            var consumer = await _context.Consumers.FirstOrDefaultAsync(c => c.Id == command.ConsumerId);
+            var bottle = await _context.Bottles.FirstOrDefaultAsync(b => b.Id == command.BottleId);
+
+            if (consumer == null || bottle == null)
+                throw new InvalidOperationException($"No consumer bottle found for consumer id {command.ConsumerId} and bottle id {command.BottleId}");
+
             var consumerBottle = _context.ConsumerBottles.FirstOrDefault(cb => cb.BottleId == command.BottleId && cb.ConsumerId == command.ConsumerId);
 
             if (consumerBottle == null)
