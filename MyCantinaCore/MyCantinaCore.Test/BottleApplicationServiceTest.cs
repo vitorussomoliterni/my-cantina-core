@@ -84,18 +84,9 @@ namespace MyCantinaCore.Test
 
                 await context.SaveChangesAsync();
 
-                var expectedBottle = new Bottle()
-                {
-                    Id = 1,
-                    Name = "Terra Rossa",
-                    Year = "2014",
-                    Producer = "Producer of Fine Wine",
-                    Description = "A robust red, for pasta lovers",
-                    WineType = "Red",
-                    Region = "Basilicata",
-                    Country = "Italy",
-                    AverageRating = 0
-                };
+                var expectedBottle = CreateNewBotle();
+                expectedBottle.Id = 1;
+                expectedBottle.AverageRating = 0;
 
                 // SUT
                 await service.AddBottle(command);
