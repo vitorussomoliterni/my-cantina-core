@@ -36,7 +36,7 @@ namespace MyCantinaCore.Services
             
             await _context.Reviews.AddAsync(review);
 
-            bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average();
+            bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
 
             await _context.SaveChangesAsync();
 
@@ -62,7 +62,7 @@ namespace MyCantinaCore.Services
             review.Body = command.Body;
             review.Rating = command.Rating;
 
-            bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average();
+            bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
 
             await _context.SaveChangesAsync();
 
