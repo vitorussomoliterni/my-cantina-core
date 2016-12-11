@@ -197,6 +197,7 @@ namespace MyCantinaCore.Test
                 var originalBottle = CreateNewBotle();
 
                 await context.Bottles.AddAsync(originalBottle);
+                await context.SaveChangesAsync();
 
                 // S.U.T.
                 await service.DeleteBottle(1);
