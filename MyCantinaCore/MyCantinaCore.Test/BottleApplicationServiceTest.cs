@@ -183,5 +183,27 @@ namespace MyCantinaCore.Test
                 Assert.Equal(actualBottle.BottleGrapeVarieties.FirstOrDefault().GrapeVariety, await context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == 2));
             }
         }
+
+        [Fact]
+        public async static Task DeleteBottleTest_ShouldDeleteBottleFromDb()
+        {
+            var options = CreateNewContextOptions();
+
+            using (var context = new MyCantinaCoreDbContext(options))
+            {
+                // Fixture
+                var service = new BottleApplicationService(context);
+
+                var originalBottle = CreateNewBotle();
+
+                await context.Bottles.AddAsync(originalBottle);
+
+                // S.U.T.
+                await service.DeleteBottle(1);
+
+                // Verify Outcome
+                Assert.Empty(context.Bottles);
+            }
+        }
     }
 }
