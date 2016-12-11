@@ -75,5 +75,48 @@ namespace MyCantinaCore.Test
 
             return bottle;
         }
+
+        private async static Task AddConsumerBottleTest_ShouldAddConsumerBottleIntoDb()
+        {
+            var options = CreateNewContextOptions();
+
+            using (var context = new MyCantinaCoreDbContext(options))
+            {
+                // Fixture
+                var service = new ConsumerBottleApplicationService(context);
+
+                var command = new ConsumerBottleCommand()
+                {
+                    BottleId = 1,
+                    ConsumerId = 1,
+                    DateAcquired = DateTime.Now,
+                    DateOpened = (DateTime)DateTime.Now,
+                    Owned = true,
+                    PricePaid = 18,
+                    Qty = 1
+                };
+
+                await context.Bottles.AddAsync(CreateNewBottle());
+                await context.Consumers.AddAsync(CreateNewConsumer());
+
+                await context.SaveChangesAsync();
+
+                // S.U.T.
+                await service.AddConsumerBottle(command);
+
+                var actualConsumerBottle = await context.ConsumerBottles.FirstOrDefaultAsync();
+
+                // Verify Outcome
+                Assert.NotEmpty(context.ConsumerBottles);
+                Assert.Equal(1, context.ConsumerBottles.Count());
+                Assert.Equal(command.BottleId, actualConsumerBottle.BottleId);
+                Assert.Equal(command.ConsumerId, actualConsumerBottle.ConsumerId);
+                Assert.Equal(command.DateAcquired, actualConsumerBottle.DateAcquired);
+                Assert.Equal(command.DateOpened, actualConsumerBottle.DateOpened);
+                Assert.Equal(command.Owned, actualConsumerBottle.Owned);
+                Assert.Equal(command.PricePaid, actualConsumerBottle.PricePaid);
+                Assert.Equal(command.Qty, actualConsumerBottle.Qty);
+            }
+        }
     }
 }
