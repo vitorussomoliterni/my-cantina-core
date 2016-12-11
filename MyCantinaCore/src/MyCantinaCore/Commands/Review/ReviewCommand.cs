@@ -8,7 +8,5 @@ namespace MyCantinaCore.Commands.Review
         public int BottleId { get; set; }
         public string Body { get; set; }
         public int Rating { get; set; }
-        public DateTime DatePosted { get; set; }
-        public DateTime? DateModified { get; set; }
     }
 }

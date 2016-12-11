@@ -31,12 +31,13 @@ namespace MyCantinaCore.Services
                 BottleId = command.BottleId,
                 Body = command.Body,
                 Rating = command.Rating,
-                DatePosted = command.DatePosted
+                DatePosted = DateTime.UtcNow
             };
-
-            bottle.Reviews.Add(review);
             
             await _context.Reviews.AddAsync(review);
+
+            bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average();
+
             await _context.SaveChangesAsync();
 
             return review;
@@ -50,16 +51,18 @@ namespace MyCantinaCore.Services
             if (consumer == null || bottle == null)
                 throw new InvalidOperationException($"No consumer bottle found for consumer id {command.ConsumerId} and bottle id {command.BottleId}");
 
-            var review =await _context.Reviews.FirstOrDefaultAsync(r => r.BottleId == command.BottleId && r.ConsumerId == command.ConsumerId);
+            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.BottleId == command.BottleId && r.ConsumerId == command.ConsumerId);
 
             if (review == null)
                 throw new InvalidOperationException("No review found");
 
             if (!review.Body.Equals(command.Body))
                 review.DateModified = DateTime.UtcNow; // Updates the date modified field if the review body has been modified
-
+           
             review.Body = command.Body;
             review.Rating = command.Rating;
+
+            bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average();
 
             await _context.SaveChangesAsync();
 
@@ -79,7 +82,6 @@ namespace MyCantinaCore.Services
             if (review == null)
                 throw new InvalidOperationException("No review found");
 
-            bottle.Reviews.Remove(review);
             _context.Reviews.Remove(review);
 
             await _context.SaveChangesAsync();
