@@ -84,6 +84,8 @@ namespace MyCantinaCore.Services
 
             _context.Reviews.Remove(review);
 
+            bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
+
             await _context.SaveChangesAsync();
         }
 
