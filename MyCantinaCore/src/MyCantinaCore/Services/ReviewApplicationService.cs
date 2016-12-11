@@ -33,7 +33,7 @@ namespace MyCantinaCore.Services
                 Rating = command.Rating,
                 DatePosted = DateTime.UtcNow
             };
-            
+
             await _context.Reviews.AddAsync(review);
 
             bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
@@ -58,7 +58,7 @@ namespace MyCantinaCore.Services
 
             if (!review.Body.Equals(command.Body))
                 review.DateModified = DateTime.UtcNow; // Updates the date modified field if the review body has been modified
-           
+
             review.Body = command.Body;
             review.Rating = command.Rating;
 
@@ -83,8 +83,13 @@ namespace MyCantinaCore.Services
                 throw new InvalidOperationException("No review found");
 
             _context.Reviews.Remove(review);
+            bottle.Reviews.Remove(review);
 
-            bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
+            if (bottle.Reviews.Count > 0)
+                bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
+
+            else if (bottle.Reviews.Count == 0)
+                bottle.AverageRating = 0;
 
             await _context.SaveChangesAsync();
         }

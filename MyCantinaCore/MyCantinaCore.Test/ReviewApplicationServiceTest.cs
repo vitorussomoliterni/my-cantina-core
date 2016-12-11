@@ -169,9 +169,11 @@ namespace MyCantinaCore.Test
 
                 // S.U.T.
                 await service.DeleteReview(1, 1);
+                var actualBottle = await context.Bottles.FirstOrDefaultAsync(b => b.Id == 1);
 
                 // Verify Outcome
                 Assert.Empty(context.Reviews);
+                Assert.Equal(0, actualBottle.AverageRating);
             }
         }
     }
