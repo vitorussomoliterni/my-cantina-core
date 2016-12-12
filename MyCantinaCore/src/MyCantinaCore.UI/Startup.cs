@@ -56,7 +56,9 @@ namespace MyCantinaCore.UI
 
             services.AddMvc();
             services.AddScoped<BottleApplicationService>()
-                .AddScoped<ConsumerBottleApplicationService>();
+                .AddScoped<ConsumerBottleApplicationService>()
+                .AddScoped<ReviewApplicationService>()
+                .AddScoped<GrapeVarietyApplicationService>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
