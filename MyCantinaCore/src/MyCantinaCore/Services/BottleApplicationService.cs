@@ -76,9 +76,7 @@ namespace MyCantinaCore.Services
 
                 bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);
             }
-
-            _context.Bottles.Update(bottle);
-
+            
             await _context.SaveChangesAsync();
 
             return bottle;
@@ -105,6 +103,46 @@ namespace MyCantinaCore.Services
         public async Task<Bottle> GetBottle(int id)
         {
             var bottle = await _context.Bottles.FirstOrDefaultAsync(b => b.Id == id);
+
+            return bottle;
+        }
+
+        public async Task<Bottle> AddGrapeVarietyToBottle(int bottleId, int grapeVarietyId)
+        {
+            var bottle = await _context.Bottles.FirstOrDefaultAsync(b => b.Id == bottleId);
+            var grapeVariety = await _context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == grapeVarietyId);
+
+            if (bottle == null || grapeVariety == null)
+                throw new InvalidOperationException($"No bottle found with id {bottleId}");
+
+            var bottleGrapeVariety = new BottleGrapeVariety()
+            {
+                BottleId = bottleId,
+                GrapeVarietyId = grapeVarietyId
+            };
+
+            bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);
+            grapeVariety.BottleGrapeVarieties.Add(bottleGrapeVariety);
+
+            await _context.SaveChangesAsync();
+
+            return bottle;
+        }
+
+        public async Task<Bottle> RemoveGrapeVarietyFromBottle(int bottleId, int grapeVarietyId)
+        {
+            var bottle = await _context.Bottles.FirstOrDefaultAsync(b => b.Id == bottleId);
+            var grapeVariety = await _context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == grapeVarietyId);
+            var bottleGrapeVariety = await _context.BottleGrapeVarieties.FirstOrDefaultAsync(bgv => bgv.BottleId == bottleId && bgv.GrapeVarietyId == grapeVarietyId);
+
+            if (bottle == null || grapeVariety == null || bottleGrapeVariety == null)
+                throw new InvalidOperationException($"No bottle found with id {bottleId}");
+
+            bottle.BottleGrapeVarieties.Remove(bottleGrapeVariety);
+            grapeVariety.BottleGrapeVarieties.Remove(bottleGrapeVariety);
+            _context.BottleGrapeVarieties.Remove(bottleGrapeVariety);
+
+            await _context.SaveChangesAsync();
 
             return bottle;
         }
