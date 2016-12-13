@@ -65,5 +65,61 @@ namespace MyCantinaCore.Test
                 Assert.Equal(expectedGrapeVariety.Colour, actualGrapeVariety.Colour);
             }
         }
+
+        [Fact]
+        public static async Task UpdateGrapeVarietyTest_ShouldUpdateGrapeVarietyIntoDb()
+        {
+            var options = CreateNewContextOptions();
+
+            using (var context = new MyCantinaCoreDbContext(options))
+            {
+                // Fixture
+                var service = new GrapeVarietyApplicationService(context);
+
+                var grapeVariety = CreateNewGrapeVariety();
+                await context.GrapeVarieties.AddAsync(grapeVariety);
+                await context.SaveChangesAsync();
+
+                var expectedGrapeVariety = new GrapeVariety()
+                {
+                    Name = "Greco di Tufo",
+                    Colour = "White"
+                };
+
+                // S.U.T.
+                await service.UpdateGrapeVariety(1, expectedGrapeVariety.Name, expectedGrapeVariety.Colour);
+
+                var actualGrapeVariety = await context.GrapeVarieties.FirstOrDefaultAsync();
+
+                // Verify Outcome
+                Assert.NotEmpty(context.GrapeVarieties);
+                Assert.Equal(1, context.GrapeVarieties.Count());
+                Assert.Equal(1, actualGrapeVariety.Id);
+                Assert.Equal(expectedGrapeVariety.Name, actualGrapeVariety.Name);
+                Assert.Equal(expectedGrapeVariety.Colour, actualGrapeVariety.Colour);
+            }
+        }
+
+        [Fact]
+        public static async Task DeleteGrapeVariety_ShouldRemoveGrapeVarietyFromDb()
+        {
+            var options = CreateNewContextOptions();
+
+            using (var context = new MyCantinaCoreDbContext(options))
+            {
+                // Fixture
+                var service = new GrapeVarietyApplicationService(context);
+
+                var grapeVariety = CreateNewGrapeVariety();
+                await context.GrapeVarieties.AddAsync(grapeVariety);
+                await context.SaveChangesAsync();
+
+                // S.U.T.
+                await service.DeleteGrapeVariety(1);
+
+                // Verify Outcome
+                Assert.Empty(context.GrapeVarieties);
+            }
+        }
     }
 }
