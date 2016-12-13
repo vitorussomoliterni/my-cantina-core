@@ -17,7 +17,7 @@ namespace MyCantinaCore.Services
             _context = context;
         }
 
-        public async Task<Consumer> AddConsumer(AddCounsumerCommand command)
+        public async Task<Consumer> AddConsumer(AddConsumerCommand command)
         {
             var consumer = new Consumer()
             {
@@ -40,7 +40,7 @@ namespace MyCantinaCore.Services
             if (consumer == null)
                 throw new InvalidOperationException($"No consumer found with id {command.Id}");
 
-            consumer.FirstName = command.FristName;
+            consumer.FirstName = command.FirstName;
             consumer.LastName = command.LastName;
             consumer.DateOfBirth = command.DateOfBirth;
             consumer.Email = command.Email;
@@ -50,7 +50,7 @@ namespace MyCantinaCore.Services
             return consumer;
         }
 
-        public async Task RemoveConsumer(int id)
+        public async Task DeleteConsumer(int id)
         {
             var consumer = await _context.Consumers.FirstOrDefaultAsync(c => c.Id == id);
 

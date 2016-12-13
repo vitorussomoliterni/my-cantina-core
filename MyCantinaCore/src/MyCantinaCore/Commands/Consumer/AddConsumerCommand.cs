@@ -2,7 +2,7 @@
 
 namespace MyCantinaCore.Commands.Consumer
 {
-    public class AddCounsumerCommand
+    public class AddConsumerCommand
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -53,7 +53,7 @@ namespace MyCantinaCore.Test
                 // Fixture
                 var service = new ConsumerApplicationService(context);
 
-                var command = new AddCounsumerCommand()
+                var command = new AddConsumerCommand()
                 {
                     FirstName = "Jane",
                     LastName = "Doe",
@@ -69,13 +69,74 @@ namespace MyCantinaCore.Test
                 var actualConsumer = await context.Consumers.FirstOrDefaultAsync();
 
                 // Verify Outcome
-                Assert.NotEmpty(context.GrapeVarieties);
+                Assert.NotEmpty(context.Consumers);
                 Assert.Equal(1, context.Consumers.Count());
                 Assert.Equal(1, actualConsumer.Id);
                 Assert.Equal(expectedConsumer.FirstName, actualConsumer.FirstName);
                 Assert.Equal(expectedConsumer.LastName, actualConsumer.LastName);
                 Assert.Equal(expectedConsumer.DateOfBirth, actualConsumer.DateOfBirth);
                 Assert.Equal(expectedConsumer.Email, actualConsumer.Email);
+            }
+        }
+
+        [Fact]
+        public static async Task UpdateConsumerTest_ShouldUpdateConsumerInDb()
+        {
+            var options = CreateNewContextOptions();
+
+            using (var context = new MyCantinaCoreDbContext(options))
+            {
+                // Fixture
+                var service = new ConsumerApplicationService(context);
+                
+                var expectedConsumer = CreateNewConsumer();
+                await context.Consumers.AddAsync(expectedConsumer);
+                await context.SaveChangesAsync();
+
+                var command = new UpdateConsumerCommand()
+                {
+                    Id = 1,
+                    FirstName = "Jane",
+                    LastName = "Doe",
+                    DateOfBirth = new DateTime(1984, 9, 21),
+                    Email = "jane.doe@email.com"
+                };
+
+                // S.U.T.
+                await service.UpdateConsumer(command);
+
+                var actualConsumer = await context.Consumers.FirstOrDefaultAsync();
+
+                // Verify Outcome
+                Assert.NotEmpty(context.Consumers);
+                Assert.Equal(1, context.Consumers.Count());
+                Assert.Equal(1, actualConsumer.Id);
+                Assert.Equal(expectedConsumer.FirstName, actualConsumer.FirstName);
+                Assert.Equal(expectedConsumer.LastName, actualConsumer.LastName);
+                Assert.Equal(expectedConsumer.DateOfBirth, actualConsumer.DateOfBirth);
+                Assert.Equal(expectedConsumer.Email, actualConsumer.Email);
+            }
+        }
+
+        [Fact]
+        public static async Task RemoveConsumerTest_ShouldRemoveConsumerFromdDb()
+        {
+            var options = CreateNewContextOptions();
+
+            using (var context = new MyCantinaCoreDbContext(options))
+            {
+                // Fixture
+                var service = new ConsumerApplicationService(context);
+
+                var expectedConsumer = CreateNewConsumer();
+                await context.Consumers.AddAsync(expectedConsumer);
+                await context.SaveChangesAsync();
+
+                // S.U.T.
+                await service.DeleteConsumer(1);
+
+                // Verify Outcome
+                Assert.Empty(context.Consumers);
             }
         }
     }
