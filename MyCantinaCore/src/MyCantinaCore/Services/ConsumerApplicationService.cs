@@ -21,7 +21,7 @@ namespace MyCantinaCore.Services
         {
             var consumer = new Consumer()
             {
-                FirstName = command.FristName,
+                FirstName = command.FirstName,
                 LastName = command.LastName,
                 DateOfBirth = command.DateOfBirth,
                 Email = command.Email
