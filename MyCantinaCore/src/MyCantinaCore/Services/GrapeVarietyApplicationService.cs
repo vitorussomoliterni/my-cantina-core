@@ -45,6 +45,17 @@ namespace MyCantinaCore.Services
             return grapeVariety;
         }
 
+        public async Task DeleteGrapeVariety(int id)
+        {
+            var grapeVariety = await _context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == id);
+
+            if (grapeVariety == null)
+                throw new InvalidOperationException($"No grape variety found for id {id}");
+
+            _context.GrapeVarieties.Remove(grapeVariety);
+            await _context.SaveChangesAsync();
+        }
+
         public IQueryable<GrapeVariety> GetAllGrapeVarieties()
         {
             var grapeVarieties = _context.GrapeVarieties;
