@@ -41,7 +41,9 @@
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": "1.1.0-preview4-final",
     "Microsoft.EntityFrameworkCore.Design": "1.1.0",
     "Microsoft.VisualStudio.Web.CodeGeneration.Core": "1.1.0-preview4-final",
-    "MyCantinaCore": "1.0.1"
+    "MyCantinaCore": "1.0.1",
+    "NuGet.CommandLine": "3.4.3",
+    "NuGet.Build": "2.12.0"
   },
 
   "tools": {
