@@ -99,6 +99,11 @@ namespace MyCantinaCore.UI
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            #region Seeding
+            
+
+            #endregion
         }
     }
 }
