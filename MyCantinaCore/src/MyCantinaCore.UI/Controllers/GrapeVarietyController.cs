@@ -19,7 +19,8 @@ namespace MyCantinaCore.UI.Controllers
             _grapeVarietyService = grapeVarietyService;
         }
 
-        [HttpGet("{id}")]
+        // GET: api / grapevariety / get / id
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> Get(int? id)
         {
             if (id == null)
@@ -36,6 +37,7 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
+        // GET: api / grapevariety
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -50,7 +52,8 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        // DELETE: api / grapevariety / delete / id
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -67,8 +70,9 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] GrapeVarietyCreateViewModel model)
+        // POST: api / grapevariety / add
+        [HttpPost("add")]
+        public async Task<IActionResult> Create([FromBody] GrapeVarietyViewModel model)
         {
             if (model == null)
                 return BadRequest();
@@ -76,6 +80,24 @@ namespace MyCantinaCore.UI.Controllers
             try
             {
                 var grapeVariety = await _grapeVarietyService.AddGrapeVariety(model.Name, model.Colour);
+                return new ObjectResult(grapeVariety);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: api / grapevariety / edit / id
+        [HttpPut("edit/{id}")]
+        public async Task<IActionResult> Edit(int? id, [FromBody] GrapeVarietyViewModel model)
+        {
+            if (id == null || model == null)
+                return BadRequest();
+
+            try
+            {
+                var grapeVariety = await _grapeVarietyService.UpdateGrapeVariety(id.Value, model.Name, model.Colour);
                 return new ObjectResult(grapeVariety);
             }
             catch (Exception ex)

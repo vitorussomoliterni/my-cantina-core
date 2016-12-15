@@ -1,6 +1,6 @@
 ﻿namespace MyCantinaCore.UI.ViewModels
 {
-    public class GrapeVarietyCreateViewModel
+    public class GrapeVarietyViewModel
     {
         public string Name { get; set; }
         public string Colour { get; set; }
