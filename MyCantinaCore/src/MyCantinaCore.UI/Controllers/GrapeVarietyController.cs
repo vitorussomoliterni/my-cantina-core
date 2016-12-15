@@ -9,7 +9,7 @@ using MyCantinaCore.UI.ViewModels;
 
 namespace MyCantinaCore.UI.Controllers
 {
-    [Route("api")]
+    [Route("api/GrapeVarieties")]
     public class GrapeVarietyController : Controller
     {
         private readonly GrapeVarietyApplicationService _grapeVarietyService;
@@ -19,8 +19,8 @@ namespace MyCantinaCore.UI.Controllers
             _grapeVarietyService = grapeVarietyService;
         }
 
-        // GET: api / GrapeVariety / id
-        [HttpGet("[controller]/{id}")]
+        // GET: api / GrapeVarieties / id
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
             if (id == null)
@@ -38,7 +38,7 @@ namespace MyCantinaCore.UI.Controllers
         }
 
         // GET: api / GrapeVarieties
-        [HttpGet("GrapeVarieties")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             try
@@ -52,8 +52,8 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // DELETE: api / GrapeVariety / Delete / id
-        [HttpDelete("[controller]/Delete/{id}")]
+        // DELETE: api / GrapeVarieties / id
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -70,8 +70,9 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // POST: api / GrapeVariety / Add
-        [HttpPost("[controller]/Add")]
+        // POST: api / GrapeVarieties
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromBody] GrapeVarietyViewModel model)
         {
             if (model == null)
@@ -88,8 +89,9 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // PUT: api / GrapeVariety / Edit / id
-        [HttpPut("[controller]/Edit/{id}")]
+        // PUT: api / GrapeVarieties / id
+        [HttpPut("{id}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int? id, [FromBody] GrapeVarietyViewModel model)
         {
             if (id == null || model == null)
