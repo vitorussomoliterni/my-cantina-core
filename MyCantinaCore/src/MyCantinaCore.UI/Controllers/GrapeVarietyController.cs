@@ -19,7 +19,7 @@ namespace MyCantinaCore.UI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetGrapeVariety(int? id)
+        public async Task<IActionResult> Get(int? id)
         {
             if (id == null)
                 return BadRequest();
