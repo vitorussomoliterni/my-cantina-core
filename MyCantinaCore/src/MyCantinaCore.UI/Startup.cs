@@ -91,6 +91,13 @@ namespace MyCantinaCore.UI
 
             app.UseIdentity();
 
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<MyCantinaCoreDbContext>();
+                context.Database.Migrate();
+                context.EnsureSeedData();
+            }
+
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
@@ -99,11 +106,6 @@ namespace MyCantinaCore.UI
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            #region Seeding
-            
-
-            #endregion
         }
     }
 }
