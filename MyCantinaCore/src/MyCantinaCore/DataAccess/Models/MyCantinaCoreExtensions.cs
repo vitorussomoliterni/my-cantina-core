@@ -22,6 +22,35 @@ namespace MyCantinaCore.DataAccess.Models
 
                 context.SaveChanges();
             }
+
+            if (!context.Bottles.Any())
+            {
+                context.Bottles.AddRange(
+                    new Bottle()
+                    {
+                        Name = "Vino Contadino",
+                        Year = "2015",
+                        Producer = "Il Contadino",
+                        Description = "A robust red",
+                        WineType = "Red",
+                        Region = "Campania",
+                        Country = "Italy",
+                        AverageRating = 0
+                    },
+                    new Bottle()
+                    {
+                        Name = "Vino Cittadino",
+                        Year = "2015",
+                        Producer = "Il Cittadino",
+                        Description = "A fine sparkling",
+                        WineType = "Sparkling",
+                        Region = "Lazio",
+                        Country = "Italy",
+                        AverageRating = 0
+                    });
+
+                context.SaveChanges();
+            }
         }
     }
 }
