@@ -100,8 +100,8 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // PUT / Bottles / BottleId / GrapeVarieties / GrapeVarietyId
-        [HttpPut("{BottleId}/GrapeVarieties/{GrapeVarietyId}")]
+        // POST / Bottles / BottleId / GrapeVarieties / GrapeVarietyId
+        [HttpPost("{BottleId}/GrapeVarieties/{GrapeVarietyId}")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> AddGrapeVarietyToBottle(int? bottleId, int? grapeVarietyId)
         {
