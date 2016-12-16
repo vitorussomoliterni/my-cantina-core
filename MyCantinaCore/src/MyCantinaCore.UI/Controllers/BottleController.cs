@@ -21,12 +21,38 @@ namespace MyCantinaCore.UI.Controllers
 
         // GET / Bottles
         [HttpGet]
-        public IActionResult GetAllBottles()
+        public async Task<IActionResult> GetAllBottles()
         {
             try
             {
-                var bottles = _bottleService.GetAllBottles().ToList();
-                return new ObjectResult(bottles);
+                var bottles = _bottleService.GetAllBottles();
+
+                var result = await bottles.Select(b => new BottleDetailsViewModel()
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    Description = b.Description,
+                    AverageRating = b.AverageRating,
+                    Country = b.Country,
+                    Producer = b.Producer,
+                    Region = b.Region,
+                    WineType = b.WineType,
+                    Year = b.Year
+                }).ToListAsync();
+
+                foreach (var r in result)
+                {
+                    var bottleGrapeVarieties = await _bottleService.GetBottle(r.Id)
+                        .Select(b => b.BottleGrapeVarieties)
+                        .FirstOrDefaultAsync();
+
+                    foreach (var bgv in bottleGrapeVarieties)
+                    {
+                        r.GrapeVarieties.Add(bgv.GrapeVarietyName);
+                    }
+                }
+
+                return new ObjectResult(result);
             }
             catch (Exception ex)
             {
@@ -45,7 +71,7 @@ namespace MyCantinaCore.UI.Controllers
             {
                 var bottle = _bottleService.GetBottle(id.Value);
 
-                var model = await bottle.Select(b => new BottleDetailsViewModel()
+                var result = await bottle.Select(b => new BottleDetailsViewModel()
                 {
                     Id = b.Id,
                     Name = b.Name,
@@ -63,10 +89,10 @@ namespace MyCantinaCore.UI.Controllers
 
                 foreach (var bgv in bottleGrapeVarieties)
                 {
-                    model.GrapeVarieties.Add(bgv.GrapeVarietyName);
+                    result.GrapeVarieties.Add(bgv.GrapeVarietyName);
                 }
 
-                return new ObjectResult(model);
+                return new ObjectResult(result);
             }
             catch (Exception ex)
             {
@@ -84,8 +110,8 @@ namespace MyCantinaCore.UI.Controllers
 
             try
             {
-                var bottle = await _bottleService.AddGrapeVarietyToBottle(bottleId.Value, grapeVarietyId.Value);
-                return new ObjectResult(bottle);
+                var result = await _bottleService.AddGrapeVarietyToBottle(bottleId.Value, grapeVarietyId.Value);
+                return new ObjectResult(result);
             }
             catch (Exception ex)
             {
@@ -103,8 +129,8 @@ namespace MyCantinaCore.UI.Controllers
 
             try
             {
-                var bottle = await _bottleService.RemoveGrapeVarietyFromBottle(bottleId.Value, grapeVarietyId.Value);
-                return new ObjectResult(bottle);
+                var result = await _bottleService.RemoveGrapeVarietyFromBottle(bottleId.Value, grapeVarietyId.Value);
+                return new ObjectResult(result);
             }
             catch (Exception ex)
             {
