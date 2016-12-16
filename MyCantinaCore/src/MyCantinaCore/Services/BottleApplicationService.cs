@@ -42,6 +42,7 @@ namespace MyCantinaCore.Services
                 };
 
                 bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);
+                await _context.BottleGrapeVarieties.AddAsync(bottleGrapeVariety);
             }
 
             await _context.Bottles.AddAsync(bottle);
@@ -79,6 +80,7 @@ namespace MyCantinaCore.Services
                 };
 
                 bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);
+                await _context.BottleGrapeVarieties.AddAsync(bottleGrapeVariety);
             }
 
             await _context.SaveChangesAsync();
