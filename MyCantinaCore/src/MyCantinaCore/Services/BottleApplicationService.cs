@@ -29,14 +29,16 @@ namespace MyCantinaCore.Services
                 Country = command.Country,
                 AverageRating = 0
             };
-            
+
             foreach (var id in command.GrapeVarietyIds)
             {
                 var grapeVariety = await _context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == id);
                 var bottleGrapeVariety = new BottleGrapeVariety()
                 {
                     Bottle = bottle,
-                    GrapeVariety = grapeVariety
+                    GrapeVariety = grapeVariety,
+                    GrapeVarietyName = grapeVariety.Name,
+                    GrapeVarietyColour = grapeVariety.Colour
                 };
 
                 bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);
@@ -71,12 +73,14 @@ namespace MyCantinaCore.Services
                 var bottleGrapeVariety = new BottleGrapeVariety()
                 {
                     Bottle = bottle,
-                    GrapeVariety = grapeVariety
+                    GrapeVariety = grapeVariety,
+                    GrapeVarietyName = grapeVariety.Name,
+                    GrapeVarietyColour = grapeVariety.Colour
                 };
 
                 bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);
             }
-            
+
             await _context.SaveChangesAsync();
 
             return bottle;
@@ -100,9 +104,9 @@ namespace MyCantinaCore.Services
             return bottles;
         }
 
-        public async Task<Bottle> GetBottle(int id)
+        public IQueryable<Bottle> GetBottle(int id)
         {
-            var bottle = await _context.Bottles.FirstOrDefaultAsync(b => b.Id == id);
+            var bottle = _context.Bottles.Where(b => b.Id == id);
 
             return bottle;
         }
@@ -118,7 +122,9 @@ namespace MyCantinaCore.Services
             var bottleGrapeVariety = new BottleGrapeVariety()
             {
                 BottleId = bottleId,
-                GrapeVarietyId = grapeVarietyId
+                GrapeVarietyId = grapeVarietyId,
+                GrapeVarietyName = grapeVariety.Name,
+                GrapeVarietyColour = grapeVariety.Colour
             };
 
             bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);

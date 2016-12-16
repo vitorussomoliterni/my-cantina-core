@@ -19,7 +19,7 @@ namespace MyCantinaCore.UI.Controllers
 
         // GET: api / GrapeVarieties / id
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int? id)
+        public async Task<IActionResult> GetGrapeVariety(int? id)
         {
             if (id == null)
                 return BadRequest();
@@ -37,7 +37,7 @@ namespace MyCantinaCore.UI.Controllers
 
         // GET: api / GrapeVarieties
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAllGrapeVarieties()
         {
             try
             {
@@ -52,7 +52,8 @@ namespace MyCantinaCore.UI.Controllers
 
         // DELETE: api / GrapeVarieties / id
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int? id)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGrapeVariety(int? id)
         {
             if (id == null)
                 return BadRequest();
@@ -70,8 +71,8 @@ namespace MyCantinaCore.UI.Controllers
 
         // POST: api / GrapeVarieties
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromBody] GrapeVarietyViewModel model)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateGrapeVariety([FromBody] GrapeVarietyViewModel model)
         {
             if (model == null)
                 return BadRequest();
@@ -89,8 +90,8 @@ namespace MyCantinaCore.UI.Controllers
 
         // PUT: api / GrapeVarieties / id
         [HttpPut("{id}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [FromBody] GrapeVarietyViewModel model)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGrapeVariety(int? id, [FromBody] GrapeVarietyViewModel model)
         {
             if (id == null || model == null)
                 return BadRequest();

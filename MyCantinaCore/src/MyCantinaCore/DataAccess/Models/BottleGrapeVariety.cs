@@ -11,5 +11,7 @@ namespace MyCantinaCore.DataAccess.Models
         public int GrapeVarietyId { get; set; }
         public Bottle  Bottle { get; set; }
         public GrapeVariety GrapeVariety { get; set; }
+        public string GrapeVarietyName { get; set; }
+        public string GrapeVarietyColour { get; set; }
     }
 }

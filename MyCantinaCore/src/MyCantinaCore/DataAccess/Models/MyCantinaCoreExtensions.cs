@@ -16,7 +16,7 @@ namespace MyCantinaCore.DataAccess.Models
                 },
                 new GrapeVariety()
                 {
-                    Name = "Greco di Tufo",
+                    Name = "Pecorino",
                     Colour = "White"
                 });
 
@@ -43,11 +43,28 @@ namespace MyCantinaCore.DataAccess.Models
                         Year = "2015",
                         Producer = "Il Cittadino",
                         Description = "A fine sparkling",
-                        WineType = "Sparkling",
+                        WineType = "White",
                         Region = "Lazio",
                         Country = "Italy",
                         AverageRating = 0
                     });
+
+                context.SaveChanges();
+
+                var firstBottle = context.Bottles.FirstOrDefault(b => b.Id == 1);
+                firstBottle.BottleGrapeVarieties.Add(new BottleGrapeVariety()
+                {
+                    GrapeVarietyId = 1,
+                    GrapeVarietyName = "Aglianico",
+                    GrapeVarietyColour = "Red"
+                });
+                var secondBottle = context.Bottles.FirstOrDefault(b => b.Id == 2);
+                secondBottle.BottleGrapeVarieties.Add(new BottleGrapeVariety()
+                {
+                    GrapeVarietyId = 1,
+                    GrapeVarietyName = "Pecorino",
+                    GrapeVarietyColour = "White"
+                });
 
                 context.SaveChanges();
             }
