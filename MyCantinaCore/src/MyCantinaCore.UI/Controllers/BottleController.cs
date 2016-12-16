@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MyCantinaCore.Services;
 using MyCantinaCore.UI.ViewModels.Bottle;
 using Microsoft.EntityFrameworkCore;
+using MyCantinaCore.Commands.Bottle;
 
 namespace MyCantinaCore.UI.Controllers
 {
@@ -19,7 +20,7 @@ namespace MyCantinaCore.UI.Controllers
             _bottleService = bottleService;
         }
 
-        // GET / Bottles
+        // GET: Bottles
         [HttpGet]
         public async Task<IActionResult> GetAllBottles()
         {
@@ -60,7 +61,7 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // GET / Bottles / Id
+        // GET: Bottles / Id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBottle(int? id)
         {
@@ -100,7 +101,7 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // POST / Bottles / BottleId / GrapeVarieties / GrapeVarietyId
+        // POST: Bottles / BottleId / GrapeVarieties / GrapeVarietyId
         [HttpPost("{BottleId}/GrapeVarieties/{GrapeVarietyId}")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> AddGrapeVarietyToBottle(int? bottleId, int? grapeVarietyId)
@@ -119,7 +120,7 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // DELETE / Bottles / BottleId / GrapeVarieties / GrapeVarietyId
+        // DELETE: Bottles / BottleId / GrapeVarieties / GrapeVarietyId
         [HttpDelete("{BottleId}/GrapeVarieties/{GrapeVarietyId}")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveGrapeVarietyToBottle(int? bottleId, int? grapeVarietyId)
@@ -135,6 +136,90 @@ namespace MyCantinaCore.UI.Controllers
             catch (Exception ex)
             {
                 return NotFound(ex.Message);
+            }
+        }
+
+        // POST: Bottles
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateBottle([FromBody] BottleCreateViewModel model)
+        {
+            if (model == null)
+                return BadRequest();
+
+            var command = new AddBottleCommand()
+            {
+                Name = model.Name,
+                Year = model.Year,
+                Producer = model.Producer,
+                Description = model.Description,
+                WineType = model.WineType,
+                Region = model.Region,
+                Country = model.Country
+            };
+            command.GrapeVarietyIds.AddRange(model.GrapeVarietyIds);
+
+            try
+            {
+                var result = await _bottleService.AddBottle(command);
+                return new ObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        // PUT: Bottles / Id
+        [HttpPut("{Id}")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditBottle([FromBody] BottleUpdateViewModel model)
+        {
+            if (model == null)
+                return BadRequest();
+
+            var command = new UpdateBottleCommand()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Year = model.Year,
+                Producer = model.Producer,
+                Description = model.Description,
+                WineType = model.WineType,
+                Region = model.Region,
+                Country = model.Country
+            };
+            command.GrapeVarietyIds.AddRange(model.GrapeVarietyIds);
+
+            try
+            {
+                var result = await _bottleService.UpdateBottle(command);
+                return new ObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        // DELETE: Bottles / Id
+        [HttpDelete("{Id}")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteBottle(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            try
+            {
+                await _bottleService.DeleteBottle(id.Value);
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
