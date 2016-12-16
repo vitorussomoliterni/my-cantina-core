@@ -42,7 +42,7 @@ namespace MyCantinaCore.DataAccess.Models
                         Name = "Vino Cittadino",
                         Year = "2015",
                         Producer = "Il Cittadino",
-                        Description = "A fine sparkling",
+                        Description = "A fine white",
                         WineType = "White",
                         Region = "Lazio",
                         Country = "Italy",
@@ -61,7 +61,7 @@ namespace MyCantinaCore.DataAccess.Models
                 var secondBottle = context.Bottles.FirstOrDefault(b => b.Id == 2);
                 secondBottle.BottleGrapeVarieties.Add(new BottleGrapeVariety()
                 {
-                    GrapeVarietyId = 1,
+                    GrapeVarietyId = 2,
                     GrapeVarietyName = "Pecorino",
                     GrapeVarietyColour = "White"
                 });
