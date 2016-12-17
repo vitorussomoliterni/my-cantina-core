@@ -56,7 +56,7 @@ namespace MyCantinaCore.UI
 
             services.AddMvc();
             services.AddScoped<BottleApplicationService>()
-                .AddScoped<Consumer>()
+                .AddScoped<ConsumerApplicationService>()
                 .AddScoped<ConsumerBottleApplicationService>()
                 .AddScoped<GrapeVarietyApplicationService>()
                 .AddScoped<ReviewApplicationService>();
