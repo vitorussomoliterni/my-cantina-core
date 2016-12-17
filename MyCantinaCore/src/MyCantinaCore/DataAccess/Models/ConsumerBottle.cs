@@ -19,6 +19,6 @@ namespace MyCantinaCore.DataAccess.Models
         public int Qty { get; set; }
         [Required]
         public bool Owned { get; set; }
-        public double? PricePaid { get; set; }
+        public decimal PricePaid { get; set; }
     }
 }

@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MyCantinaCore.Commands.ConsumerBottle
+namespace MyCantinaCore.UI.ViewModels.ConsumerBottle
 {
-    public class ConsumerBottleCommand
+    public class ConsumerCreateViewModel
     {
-        public ConsumerBottleCommand()
+        public ConsumerCreateViewModel()
         {
             DateAcquired = new int[3];
             DateOpened = new int[3];
         }
-
+        
         public int ConsumerId { get; set; }
         public int BottleId { get; set; }
         public int[] DateAcquired { get; set; }

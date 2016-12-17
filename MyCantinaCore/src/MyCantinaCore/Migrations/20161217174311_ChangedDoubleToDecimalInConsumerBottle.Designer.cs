@@ -8,9 +8,10 @@ using MyCantinaCore.DataAccess.Models;
 namespace MyCantinaCore.Migrations
 {
     [DbContext(typeof(MyCantinaCoreDbContext))]
-    partial class MyCantinaCoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161217174311_ChangedDoubleToDecimalInConsumerBottle")]
+    partial class ChangedDoubleToDecimalInConsumerBottle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")

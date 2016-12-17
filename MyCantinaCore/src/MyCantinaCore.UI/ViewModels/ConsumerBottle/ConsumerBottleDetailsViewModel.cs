@@ -22,6 +22,6 @@ namespace MyCantinaCore.UI.ViewModels.ConsumerBottle
         public bool Owned { get; set; }
         public DateTime DateAcquired { get; set; }
         public DateTime? DateOpened { get; set; }
-        public double? PricePaid { get; set; }
+        public decimal PricePaid { get; set; }
     }
 }

@@ -29,12 +29,19 @@ namespace MyCantinaCore.Services
             {
                 ConsumerId = command.ConsumerId,
                 BottleId = command.BottleId,
-                DateAcquired = command.DateAcquired,
-                DateOpened = command.DateOpened,
+                DateAcquired = new DateTime(command.DateAcquired[0], command.DateAcquired[1], command.DateAcquired[2]),
                 Qty = command.Qty,
                 Owned = command.Owned,
-                PricePaid = command.PricePaid
+                PricePaid = command.PricePaid.Value
             };
+
+            if (command.DateOpened.Any())
+                consumerBottle.DateOpened = new DateTime(command.DateOpened[0], command.DateOpened[1], command.DateOpened[2]);
+
+            if (command.PricePaid == null)
+                consumerBottle.PricePaid = 0;
+            else
+                consumerBottle.PricePaid = command.PricePaid.Value;
 
             await _context.ConsumerBottles.AddAsync(consumerBottle);
             await _context.SaveChangesAsync();
@@ -55,13 +62,18 @@ namespace MyCantinaCore.Services
             if (consumerBottle == null)
                 throw new InvalidOperationException("No consumer bottle found");
 
-            consumerBottle.DateAcquired = command.DateAcquired;
-            consumerBottle.DateOpened = command.DateOpened;
+            consumerBottle.DateAcquired = new DateTime(command.DateAcquired[0], command.DateAcquired[1], command.DateAcquired[2]);
             consumerBottle.Qty = command.Qty;
             consumerBottle.Owned = command.Owned;
-            consumerBottle.PricePaid = command.PricePaid;
 
-            _context.ConsumerBottles.Update(consumerBottle);
+            if (command.DateOpened.Any())
+                consumerBottle.DateOpened = new DateTime(command.DateOpened[0], command.DateOpened[1], command.DateOpened[2]);
+
+            if (command.PricePaid == null)
+                consumerBottle.PricePaid = 0;
+            else
+                consumerBottle.PricePaid = command.PricePaid.Value;
+            
             await _context.SaveChangesAsync();
 
             return consumerBottle;
@@ -90,7 +102,7 @@ namespace MyCantinaCore.Services
 
         public IQueryable<ConsumerBottle> GetConsumerBottle(int bottleId, int consumerId)
         {
-            var consumerBottle = _context.ConsumerBottles;
+            var consumerBottle = _context.ConsumerBottles.Where(cb => cb.BottleId == bottleId && cb.ConsumerId == consumerId);
 
             if (consumerBottle == null)
                 throw new InvalidOperationException("No consumer bottle found");

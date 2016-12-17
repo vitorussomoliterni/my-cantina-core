@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyCantinaCore.Commands.ConsumerBottle;
 using MyCantinaCore.Services;
 using MyCantinaCore.UI.ViewModels.ConsumerBottle;
 using System;
@@ -43,8 +45,7 @@ namespace MyCantinaCore.UI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
-                throw;
+                return BadRequest(ex);
             }
         }
 
@@ -70,7 +71,7 @@ namespace MyCantinaCore.UI.Controllers
                     Producer = cb.Bottle.Producer,
                     Region = cb.Bottle.Region,
                     Country = cb.Bottle.Country,
-                    //PricePaid = cb.PricePaid.Value, // TODO: Fix this conversion, or get rid of it altogether
+                    PricePaid = cb.PricePaid,
                     DateAcquired = cb.DateAcquired,
                     DateOpened = cb.DateOpened
                 }).FirstOrDefaultAsync();
@@ -83,8 +84,36 @@ namespace MyCantinaCore.UI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
-                throw;
+                return BadRequest(ex);
+            }
+        }
+
+        // POST: api / Consumers / ConsumerId / Bottles
+        [HttpPost]
+        public async Task<IActionResult> CreateBottle(int? consumerId, [FromBody] ConsumerCreateViewModel model)
+        {
+            if (consumerId == null || model == null)
+                return BadRequest();
+
+            var command = new ConsumerBottleCommand()
+            {
+                ConsumerId = consumerId.Value,
+                Owned = model.Owned,
+                DateAcquired = model.DateAcquired,
+                DateOpened = model.DateOpened,
+                PricePaid = model.PricePaid,
+                Qty = model.Qty
+            };
+
+            try
+            {
+                var result = await _consumerBottleService.AddConsumerBottle(command);
+
+                return new ObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
             }
         }
     }
