@@ -82,12 +82,15 @@ namespace MyCantinaCore.Services
         {
             var consumerBottles = _context.ConsumerBottles.Where(cb => cb.ConsumerId == consumerId);
 
+            if (consumerBottles == null)
+                throw new InvalidOperationException("No consumer bottles found");
+
             return consumerBottles;
         }
 
-        public async Task<ConsumerBottle> GetConsumerBottle(int bottleId, int consumerId)
+        public IQueryable<ConsumerBottle> GetConsumerBottle(int bottleId, int consumerId)
         {
-            var consumerBottle = await _context.ConsumerBottles.FirstOrDefaultAsync(cb => cb.BottleId == bottleId && cb.ConsumerId == consumerId);
+            var consumerBottle = _context.ConsumerBottles;
 
             if (consumerBottle == null)
                 throw new InvalidOperationException("No consumer bottle found");

@@ -129,6 +129,53 @@ namespace MyCantinaCore.DataAccess.Models
 
                 context.SaveChanges();
             }
+
+            if (!context.ConsumerBottles.Any())
+            {
+                context.ConsumerBottles.AddRange(
+                    new ConsumerBottle()
+                    {
+                        ConsumerId = 1,
+                        BottleId = 1,
+                        Owned = true,
+                        Qty = 1,
+                        PricePaid = 22,
+                        DateAcquired = DateTime.Now,
+                        DateOpened = DateTime.Now
+                    },
+                    new ConsumerBottle()
+                    {
+                        ConsumerId = 1,
+                        BottleId = 2,
+                        Owned = true,
+                        Qty = 1,
+                        PricePaid = 18,
+                        DateAcquired = DateTime.Now,
+                        DateOpened = DateTime.Now
+                    },
+                    new ConsumerBottle()
+                    {
+                        ConsumerId = 2,
+                        BottleId = 1,
+                        Owned = true,
+                        Qty = 1,
+                        PricePaid = 21,
+                        DateAcquired = DateTime.Now,
+                        DateOpened = DateTime.Now
+                    },
+                    new ConsumerBottle()
+                    {
+                        ConsumerId = 2,
+                        BottleId = 2,
+                        Owned = true,
+                        Qty = 1,
+                        PricePaid = 19,
+                        DateAcquired = DateTime.Now,
+                        DateOpened = DateTime.Now
+                    });
+
+                context.SaveChanges();
+            }
         }
     }
 }
