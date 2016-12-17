@@ -45,13 +45,7 @@ namespace MyCantinaCore.Services
 
         public async Task<Review> UpdateReview(ReviewCommand command)
         {
-            var consumer = await _context.Consumers.FirstOrDefaultAsync(c => c.Id == command.ConsumerId);
-            var bottle = await _context.Bottles.FirstOrDefaultAsync(b => b.Id == command.BottleId);
-
-            if (consumer == null || bottle == null)
-                throw new InvalidOperationException($"No consumer bottle found for consumer id {command.ConsumerId} and bottle id {command.BottleId}");
-
-            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.BottleId == command.BottleId && r.ConsumerId == command.ConsumerId);
+            var review = await _context.Reviews.Include(r => r.Bottle).FirstOrDefaultAsync(r => r.Id == command.Id);
 
             if (review == null)
                 throw new InvalidOperationException("No review found");
@@ -62,34 +56,27 @@ namespace MyCantinaCore.Services
             review.Body = command.Body;
             review.Rating = command.Rating;
 
-            bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
+            review.Bottle.AverageRating = review.Bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
 
             await _context.SaveChangesAsync();
 
             return review;
         }
 
-        public async Task DeleteReview(int consumerId, int bottleId)
+        public async Task DeleteReview(int id)
         {
-            var consumer = await _context.Consumers.FirstOrDefaultAsync(c => c.Id == consumerId);
-            var bottle = await _context.Bottles.FirstOrDefaultAsync(b => b.Id == bottleId);
-
-            if (consumer == null || bottle == null)
-                throw new InvalidOperationException($"No consumer bottle found for consumer id {consumerId} and bottle id {bottleId}");
-
-            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.BottleId == bottleId && r.ConsumerId == consumerId);
+            var review = await _context.Reviews.Include(r => r.Bottle).FirstOrDefaultAsync(r => r.Id == id);
 
             if (review == null)
                 throw new InvalidOperationException("No review found");
-
+            
             _context.Reviews.Remove(review);
-            bottle.Reviews.Remove(review);
 
-            if (bottle.Reviews.Count > 0)
-                bottle.AverageRating = bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
+            if (review.Bottle.Reviews.Count > 0)
+                review.Bottle.AverageRating = review.Bottle.Reviews.Select(r => r.Rating).Average(); // Calculates the votes average
 
-            else if (bottle.Reviews.Count == 0)
-                bottle.AverageRating = 0;
+            else if (review.Bottle.Reviews.Count == 0)
+                review.Bottle.AverageRating = 0;
 
             await _context.SaveChangesAsync();
         }
@@ -108,9 +95,9 @@ namespace MyCantinaCore.Services
             return reviews;
         }
 
-        public async Task<Review> GetReview(int bottleId, int consumerId)
+        public IQueryable<Review> GetReview(int id)
         {
-            var review = await _context.Reviews.FirstOrDefaultAsync(r => r.ConsumerId == consumerId && r.BottleId == bottleId);
+            var review = _context.Reviews.Where(r => r.Id == id);
 
             if (review == null)
                 throw new InvalidOperationException("No review found");

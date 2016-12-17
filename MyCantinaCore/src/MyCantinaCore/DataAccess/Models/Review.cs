@@ -5,6 +5,7 @@ namespace MyCantinaCore.DataAccess.Models
 {
     public class Review
     {
+        public int Id { get; set; }
         [Required]
         public int ConsumerId { get; set; }
         [Required]

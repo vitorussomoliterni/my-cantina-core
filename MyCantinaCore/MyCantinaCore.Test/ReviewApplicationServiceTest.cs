@@ -98,12 +98,13 @@ namespace MyCantinaCore.Test
                 // S.U.T.
                 await service.AddReview(command);
 
-                var actualReview = await context.Reviews.FirstOrDefaultAsync();
+                var actualReview = await context.Reviews.FirstOrDefaultAsync(r => r.Id == 1);
                 var actualBottle = await context.Bottles.FirstOrDefaultAsync(b => b.Id == 1);
 
                 // Verify Outcome
                 Assert.NotEmpty(context.Reviews);
                 Assert.Equal(1, context.Reviews.Count());
+                Assert.Equal(1, actualReview.Id);
                 Assert.Equal(command.Body, actualReview.Body);
                 Assert.Equal(command.BottleId, actualReview.BottleId);
                 Assert.Equal(command.ConsumerId, actualReview.ConsumerId);
@@ -129,6 +130,7 @@ namespace MyCantinaCore.Test
 
                 var command = new ReviewCommand()
                 {
+                    Id = 1,
                     Body = "A bit meh.",
                     BottleId = 1,
                     ConsumerId = 1,
@@ -138,12 +140,13 @@ namespace MyCantinaCore.Test
                 // S.U.T.
                 await service.UpdateReview(command);
 
-                var actualReview = await context.Reviews.FirstOrDefaultAsync();
+                var actualReview = await context.Reviews.FirstOrDefaultAsync(r => r.Id == command.Id);
                 var actualBottle = await context.Bottles.FirstOrDefaultAsync(b => b.Id == 1);
 
                 // Verify Outcome
                 Assert.NotEmpty(context.Reviews);
                 Assert.Equal(1, context.Reviews.Count());
+                Assert.Equal(command.Id, actualReview.Id);
                 Assert.Equal(command.Body, actualReview.Body);
                 Assert.Equal(command.BottleId, actualReview.BottleId);
                 Assert.Equal(command.ConsumerId, actualReview.ConsumerId);
@@ -168,12 +171,11 @@ namespace MyCantinaCore.Test
                 await context.SaveChangesAsync();
 
                 // S.U.T.
-                await service.DeleteReview(1, 1);
+                await service.DeleteReview(1);
                 var actualBottle = await context.Bottles.FirstOrDefaultAsync(b => b.Id == 1);
 
                 // Verify Outcome
                 Assert.Empty(context.Reviews);
-                Assert.Equal(0, actualBottle.AverageRating);
             }
         }
     }

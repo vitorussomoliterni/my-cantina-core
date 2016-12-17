@@ -27,9 +27,6 @@ namespace MyCantinaCore.DataAccess.Models
             modelBuilder.Entity<ConsumerBottle>()
                 .HasKey(cb => new { cb.BottleId, cb.ConsumerId });
 
-            modelBuilder.Entity<Review>()
-                .HasKey(r => new { r.BottleId, r.ConsumerId });
-
             modelBuilder.Entity<BottleGrapeVariety>()
                 .HasKey(bgr => new { bgr.BottleId, bgr.GrapeVarietyId });
         }

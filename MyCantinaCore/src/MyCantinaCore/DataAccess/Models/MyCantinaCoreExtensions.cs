@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace MyCantinaCore.DataAccess.Models
 {
@@ -65,6 +66,50 @@ namespace MyCantinaCore.DataAccess.Models
                     GrapeVarietyName = "Pecorino",
                     GrapeVarietyColour = "White"
                 });
+
+                context.SaveChanges();
+            }
+
+            if (!context.Consumers.Any())
+            {
+                context.Consumers.AddRange(
+                    new Consumer()
+                    {
+                        FirstName = "Jane",
+                        LastName = "Doe",
+                        Email = "jane.doe@email.com",
+                        DateOfBirth = new DateTime(1985, 10, 11)
+                    },
+                    new Consumer()
+                    {
+                        FirstName = "Maggie",
+                        LastName = "Smith",
+                        Email = "maggie.smith@email.com",
+                        DateOfBirth = new DateTime(1934, 12, 28)
+                    });
+
+                context.SaveChanges();
+            }
+
+            if (!context.Reviews.Any())
+            {
+                context.Reviews.AddRange(
+                    new Review()
+                    {
+                        BottleId = 1,
+                        ConsumerId = 1,
+                        Body = "I like this wine!",
+                        Rating = 9,
+                        DatePosted = DateTime.Now
+                    },
+                    new Review()
+                    {
+                        BottleId = 2,
+                        ConsumerId = 2,
+                        Body = "This wine was okay, I guess",
+                        Rating = 6,
+                        DatePosted = DateTime.Now
+                    });
 
                 context.SaveChanges();
             }

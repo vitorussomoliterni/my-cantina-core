@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyCantinaCore.Commands.Review;
 using MyCantinaCore.DataAccess.Models;
 using MyCantinaCore.Services;
+using MyCantinaCore.UI.ViewModels.Review;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,15 +22,128 @@ namespace MyCantinaCore.UI.Controllers
         }
 
         // GET: api / Consumers / Id / Reviews
-        [HttpGet("Consumers/{id}/Reviews")]
-        public async Task<IActionResult> GetReview(int? id)
+        [HttpGet("Consumers/{ConsumerId}/Reviews")]
+        public async Task<IActionResult> GetReviewsByConsumerId(int? consumerId)
         {
-            if (id == null)
+            if (consumerId == null)
                 return BadRequest();
 
             try
             {
-                var result = await _reviewService.GetAllReviewsByConsumerId(id.Value).ToListAsync();
+                var reviews = _reviewService.GetAllReviewsByConsumerId(consumerId.Value);
+
+                var result = await reviews.Select(r => new ReviewDetailsViewModel()
+                {
+                    Id = r.Id,
+                    Body = r.Body,
+                    Rating = r.Rating,
+                    BottleName = r.Bottle.Name,
+                    Producer = r.Bottle.Producer,
+                    BottleYear = r.Bottle.Year,
+                    WineType = r.Bottle.WineType,
+                    ConsumerFullName = $"{r.Consumer.FirstName} {r.Consumer.LastName}",
+                    ConsumerId = r.ConsumerId,
+                    BottleId = r.BottleId,
+                    DatePosted = r.DatePosted,
+                    DateModified = r.DateModified
+                }).ToListAsync();
+
+                return new ObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // GET: api / Bottles / BottleId / Reviews
+        [HttpGet("Bottles/{BottleId}/Reviews")]
+        public async Task<IActionResult> GetReviewsByBottleId(int? bottleId)
+        {
+            if (bottleId == null)
+                return BadRequest();
+
+            try
+            {
+                var reviews = _reviewService.GetAllReviewsByBottleId(bottleId.Value);
+
+                var result = await reviews.Select(r => new ReviewDetailsViewModel()
+                {
+                    Id = r.Id,
+                    Body = r.Body,
+                    Rating = r.Rating,
+                    BottleName = r.Bottle.Name,
+                    Producer = r.Bottle.Producer,
+                    BottleYear = r.Bottle.Year,
+                    WineType = r.Bottle.WineType,
+                    ConsumerFullName = $"{r.Consumer.FirstName} {r.Consumer.LastName}",
+                    ConsumerId = r.ConsumerId,
+                    BottleId = r.BottleId,
+                    DatePosted = r.DatePosted,
+                    DateModified = r.DateModified
+                }).FirstOrDefaultAsync();
+
+                return new ObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // GET: api / Reviews / Id
+        [HttpGet("Reviews/{ReviewId}")]
+        public async Task<IActionResult> GetReviewByReviewId(int? reviewId)
+        {
+            if (reviewId == null)
+                return BadRequest();
+
+            try
+            {
+                var reviews = _reviewService.GetReview(reviewId.Value);
+
+                var result = await reviews.Select(r => new ReviewDetailsViewModel()
+                {
+                    Id = r.Id,
+                    Body = r.Body,
+                    Rating = r.Rating,
+                    BottleName = r.Bottle.Name,
+                    Producer = r.Bottle.Producer,
+                    BottleYear = r.Bottle.Year,
+                    WineType = r.Bottle.WineType,
+                    ConsumerFullName = $"{r.Consumer.FirstName} {r.Consumer.LastName}",
+                    ConsumerId = r.ConsumerId,
+                    BottleId = r.BottleId,
+                    DatePosted = r.DatePosted,
+                    DateModified = r.DateModified
+                }).FirstOrDefaultAsync();
+
+                return new ObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST: api / Consumers / {ConsumerId} / Bottle / {BottleId} / Reviews
+        [HttpPost("Consumers/{ConsumerId}/Bottles/{BottleId}/Reviews")]
+        public async Task<IActionResult> CreateReview(int? consumerId, int? bottleId, [FromBody] ReviewCreateViewModel model)
+        {
+            if (consumerId == null || bottleId == null || model == null)
+                return BadRequest();
+
+            var command = new ReviewCommand()
+            {
+                BottleId = bottleId.Value,
+                ConsumerId = consumerId.Value,
+                Body = model.Body,
+                Rating = model.Rating
+            };
+
+            try
+            {
+                var result = await _reviewService.AddReview(command);
 
                 return new ObjectResult(result);
             }
