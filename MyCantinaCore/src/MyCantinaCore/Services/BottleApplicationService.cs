@@ -30,19 +30,19 @@ namespace MyCantinaCore.Services
                 AverageRating = 0
             };
 
-            foreach (var id in command.GrapeVarietyIds)
+            if (command.GrapeVarietyIds != null && command.GrapeVarietyIds.Count > 0)
             {
-                var grapeVariety = await _context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == id);
-                var bottleGrapeVariety = new BottleGrapeVariety()
+                var bottleGrapeVarieties = await _context.GrapeVarieties.Where(gv => command.GrapeVarietyIds.Contains(gv.Id)) // Creates new bottle grape variety objects
+                .Select(gv => new BottleGrapeVariety
                 {
                     Bottle = bottle,
-                    GrapeVariety = grapeVariety,
-                    GrapeVarietyName = grapeVariety.Name,
-                    GrapeVarietyColour = grapeVariety.Colour
-                };
+                    GrapeVariety = gv,
+                    GrapeVarietyName = gv.Name,
+                    GrapeVarietyColour = gv.Colour
+                }).ToListAsync();
 
-                bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);
-                await _context.BottleGrapeVarieties.AddAsync(bottleGrapeVariety);
+                bottle.BottleGrapeVarieties.AddRange(bottleGrapeVarieties);
+                await _context.AddRangeAsync(bottleGrapeVarieties);
             }
 
             await _context.Bottles.AddAsync(bottle);
@@ -53,7 +53,7 @@ namespace MyCantinaCore.Services
 
         public async Task<Bottle> UpdateBottle(UpdateBottleCommand command)
         {
-            var bottle = await _context.Bottles.FirstOrDefaultAsync(b => b.Id == command.Id);
+            var bottle = await _context.Bottles.Include(b => b.BottleGrapeVarieties).FirstOrDefaultAsync(b => b.Id == command.Id);
 
             if (bottle == null)
                 throw new InvalidOperationException($"No bottle found with id {command.Id}");
@@ -66,12 +66,20 @@ namespace MyCantinaCore.Services
             bottle.Region = command.Region;
             bottle.Country = command.Country;
 
-            bottle.BottleGrapeVarieties.RemoveAll(b => true);
+            var existingGrapeVarieties = bottle.BottleGrapeVarieties.Select(bgv => bgv.GrapeVarietyId);
+            var grapeVarietiesToAdd = command.GrapeVarietyIds.Except(existingGrapeVarieties);
+            var grapeVarietiesToRemove = existingGrapeVarieties.Except(command.GrapeVarietyIds);
 
-            foreach (var id in command.GrapeVarietyIds)
+            for(var i = 0; i < existingGrapeVarieties.Count(); i++)
+            {
+                if (grapeVarietiesToRemove.Contains(bottle.BottleGrapeVarieties[i].GrapeVarietyId))
+                    _context.BottleGrapeVarieties.Remove(bottle.BottleGrapeVarieties[i]);
+            }
+
+            foreach (var id in grapeVarietiesToAdd)
             {
                 var grapeVariety = await _context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == id);
-                var bottleGrapeVariety = new BottleGrapeVariety()
+                var bgv = new BottleGrapeVariety()
                 {
                     Bottle = bottle,
                     GrapeVariety = grapeVariety,
@@ -79,9 +87,25 @@ namespace MyCantinaCore.Services
                     GrapeVarietyColour = grapeVariety.Colour
                 };
 
-                bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);
-                await _context.BottleGrapeVarieties.AddAsync(bottleGrapeVariety);
+                bottle.BottleGrapeVarieties.Add(bgv);
             }
+
+            //var bottleGrapeVarieties = await _context.BottleGrapeVarieties.Where(bgv => bgv.BottleId == bottle.Id).ToListAsync();
+
+            //foreach (var id in command.GrapeVarietyIds)
+            //{
+            //    var grapeVariety = await _context.GrapeVarieties.FirstOrDefaultAsync(gv => gv.Id == id);
+            //    var bottleGrapeVariety = new BottleGrapeVariety()
+            //    {
+            //        Bottle = bottle,
+            //        GrapeVariety = grapeVariety,
+            //        GrapeVarietyName = grapeVariety.Name,
+            //        GrapeVarietyColour = grapeVariety.Colour
+            //    };
+
+            //    bottle.BottleGrapeVarieties.Add(bottleGrapeVariety);
+            //    await _context.BottleGrapeVarieties.AddAsync(bottleGrapeVariety);
+            //}
 
             await _context.SaveChangesAsync();
 
