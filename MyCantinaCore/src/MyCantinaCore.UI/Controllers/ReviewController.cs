@@ -152,5 +152,31 @@ namespace MyCantinaCore.UI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        // PUT: api / Reviews / Id
+        [HttpPut("Reviews/{Id}")]
+        public async Task<IActionResult> UpdateReview(int? id, [FromBody] ReviewCreateViewModel model)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var command = new ReviewCommand()
+            {
+                Id = id.Value,
+                Body = model.Body,
+                Rating = model.Rating
+            };
+
+            try
+            {
+                var result = await _reviewService.UpdateReview(command);
+
+                return new ObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
