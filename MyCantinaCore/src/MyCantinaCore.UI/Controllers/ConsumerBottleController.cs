@@ -98,6 +98,7 @@ namespace MyCantinaCore.UI.Controllers
             var command = new ConsumerBottleCommand()
             {
                 ConsumerId = consumerId.Value,
+                BottleId = model.BottleId,
                 Owned = model.Owned,
                 DateAcquired = model.DateAcquired,
                 DateOpened = model.DateOpened,
