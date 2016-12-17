@@ -81,7 +81,7 @@ namespace MyCantinaCore.UI.Controllers
                     BottleId = r.BottleId,
                     DatePosted = r.DatePosted,
                     DateModified = r.DateModified
-                }).FirstOrDefaultAsync();
+                }).ToListAsync();
 
                 return new ObjectResult(result);
             }

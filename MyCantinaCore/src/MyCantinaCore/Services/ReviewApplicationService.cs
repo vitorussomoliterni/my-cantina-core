@@ -25,6 +25,11 @@ namespace MyCantinaCore.Services
             if (consumer == null || bottle == null)
                 throw new InvalidOperationException($"No consumer bottle found for consumer id {command.ConsumerId} and bottle id {command.BottleId}");
 
+            var existingReview = await _context.Reviews.FirstOrDefaultAsync(r => r.ConsumerId == consumer.Id && r.BottleId == bottle.Id);
+
+            if (existingReview != null) // Throws exception if a review with the same consumerId and bottleId already exists
+                throw new DbUpdateException($"A review for consumer id {command.ConsumerId} and bottle id {command.BottleId} already exists.", new Exception());
+
             var review = new Review()
             {
                 ConsumerId = command.ConsumerId,

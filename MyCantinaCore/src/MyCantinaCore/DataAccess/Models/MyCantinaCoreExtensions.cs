@@ -112,8 +112,8 @@ namespace MyCantinaCore.DataAccess.Models
                     },
                     new Review()
                     {
-                        BottleId = 2,
-                        ConsumerId = 1,
+                        BottleId = 1,
+                        ConsumerId = 2,
                         Body = "I've had better",
                         Rating = 2,
                         DatePosted = DateTime.Now
