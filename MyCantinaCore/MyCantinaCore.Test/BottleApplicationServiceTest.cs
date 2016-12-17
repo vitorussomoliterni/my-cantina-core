@@ -84,7 +84,7 @@ namespace MyCantinaCore.Test
                 await context.SaveChangesAsync();
 
                 var expectedBottle = CreateNewBotle();
-                expectedBottle.Id = 1;
+                expectedBottle.Id = 3;
                 expectedBottle.AverageRating = 0;
 
                 // SUT
@@ -138,7 +138,9 @@ namespace MyCantinaCore.Test
                 originalBottle.BottleGrapeVarieties.Add(new BottleGrapeVariety()
                 {
                     BottleId = 1,
-                    GrapeVarietyId = 1
+                    GrapeVarietyId = 1,
+                    GrapeVarietyName = "Aglianico",
+                    GrapeVarietyColour = "Red"
                 });
 
                 await context.Bottles.AddAsync(originalBottle);

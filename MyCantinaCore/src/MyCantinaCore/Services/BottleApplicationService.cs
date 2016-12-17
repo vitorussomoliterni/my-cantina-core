@@ -73,7 +73,11 @@ namespace MyCantinaCore.Services
             for(var i = 0; i < existingGrapeVarieties.Count(); i++)
             {
                 if (grapeVarietiesToRemove.Contains(bottle.BottleGrapeVarieties[i].GrapeVarietyId))
-                    _context.BottleGrapeVarieties.Remove(bottle.BottleGrapeVarieties[i]);
+                {
+                    var bgv = bottle.BottleGrapeVarieties[i];
+                    bottle.BottleGrapeVarieties.Remove(bgv);
+                    //_context.BottleGrapeVarieties.Remove(bgv);
+                }
             }
 
             foreach (var id in grapeVarietiesToAdd)
@@ -88,6 +92,7 @@ namespace MyCantinaCore.Services
                 };
 
                 bottle.BottleGrapeVarieties.Add(bgv);
+                //_context.BottleGrapeVarieties.Add(bgv);
             }
 
             //var bottleGrapeVarieties = await _context.BottleGrapeVarieties.Where(bgv => bgv.BottleId == bottle.Id).ToListAsync();
