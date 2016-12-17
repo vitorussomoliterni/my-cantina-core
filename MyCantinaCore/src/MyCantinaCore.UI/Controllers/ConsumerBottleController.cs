@@ -116,5 +116,54 @@ namespace MyCantinaCore.UI.Controllers
                 return BadRequest(ex);
             }
         }
+
+        // PUT: api / Consumers / ConsumerId / Bottles / BottleId
+        [HttpPut("{BottleId}")]
+        public async Task<IActionResult> UpdateConsumerBottle(int? consumerId, int? bottleId, [FromBody] ConsumerCreateViewModel model)
+        {
+            if (consumerId == null || bottleId == null || model == null)
+                return BadRequest();
+
+            var command = new ConsumerBottleCommand()
+            {
+                BottleId = bottleId.Value,
+                ConsumerId = consumerId.Value,
+                DateAcquired = model.DateAcquired,
+                DateOpened = model.DateOpened,
+                Owned = model.Owned,
+                PricePaid = model.PricePaid,
+                Qty = model.Qty
+            };
+
+            try
+            {
+                var result = await _consumerBottleService.UpdateConsumerBottle(command);
+
+                return new ObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        // DELETE: api / Consumers / ConsumerId / Bottles / BottleId
+        [HttpDelete("{BottleId}")]
+        public async Task<IActionResult> DeleteConsumerBottle(int? consumerId, int? bottleId)
+        {
+            if (consumerId == null || bottleId == null)
+                return BadRequest();
+
+            try
+            {
+                await _consumerBottleService.DeleteConsumerBottle(consumerId.Value, bottleId.Value);
+
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }
