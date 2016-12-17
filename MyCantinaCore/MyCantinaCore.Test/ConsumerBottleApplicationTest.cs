@@ -7,6 +7,7 @@ using MyCantinaCore.Services;
 using MyCantinaCore.DataAccess.Models;
 using Microsoft.Extensions.DependencyInjection;
 using MyCantinaCore.Commands.ConsumerBottle;
+using System.Collections.Generic;
 
 namespace MyCantinaCore.Test
 {
@@ -35,8 +36,8 @@ namespace MyCantinaCore.Test
             {
                 ConsumerId = 1,
                 BottleId = 1,
-                DateAcquired = DateTime.Now,
-                DateOpened = (DateTime)DateTime.Now,
+                DateAcquired = new DateTime(2016, 10, 14),
+                DateOpened = new DateTime(2016, 10, 16),
                 Qty = 1,
                 Owned = true,
                 PricePaid = 18
@@ -89,8 +90,8 @@ namespace MyCantinaCore.Test
                 {
                     BottleId = 1,
                     ConsumerId = 1,
-                    DateAcquired = DateTime.Now,
-                    DateOpened = (DateTime)DateTime.Now,
+                    DateAcquired = new int[] { 2016, 10, 14 },
+                    DateOpened = new int[] { 2016, 10, 16 },
                     Owned = true,
                     PricePaid = 18,
                     Qty = 1
@@ -111,8 +112,8 @@ namespace MyCantinaCore.Test
                 Assert.Equal(1, context.ConsumerBottles.Count());
                 Assert.Equal(command.BottleId, actualConsumerBottle.BottleId);
                 Assert.Equal(command.ConsumerId, actualConsumerBottle.ConsumerId);
-                Assert.Equal(command.DateAcquired, actualConsumerBottle.DateAcquired);
-                Assert.Equal(command.DateOpened, actualConsumerBottle.DateOpened);
+                Assert.Equal(new DateTime(command.DateAcquired[0], command.DateAcquired[1], command.DateAcquired[2]), actualConsumerBottle.DateAcquired);
+                Assert.Equal(new DateTime(command.DateOpened[0], command.DateOpened[1], command.DateOpened[2]), actualConsumerBottle.DateOpened);
                 Assert.Equal(command.Owned, actualConsumerBottle.Owned);
                 Assert.Equal(command.PricePaid, actualConsumerBottle.PricePaid);
                 Assert.Equal(command.Qty, actualConsumerBottle.Qty);
@@ -138,8 +139,8 @@ namespace MyCantinaCore.Test
                 {
                     BottleId = 1,
                     ConsumerId = 1,
-                    DateAcquired = new DateTime(2016, 5, 15),
-                    DateOpened = new DateTime(2016, 5, 16),
+                    DateAcquired = new int[] { 2016, 5, 11 },
+                    DateOpened = new int[] { 2016, 6, 18 },
                     Owned = false,
                     PricePaid = 28,
                     Qty = 0
@@ -155,8 +156,8 @@ namespace MyCantinaCore.Test
                 Assert.Equal(1, context.ConsumerBottles.Count());
                 Assert.Equal(command.BottleId, actualConsumerBottle.BottleId);
                 Assert.Equal(command.ConsumerId, actualConsumerBottle.ConsumerId);
-                Assert.Equal(command.DateAcquired, actualConsumerBottle.DateAcquired);
-                Assert.Equal(command.DateOpened, actualConsumerBottle.DateOpened);
+                Assert.Equal(new DateTime(command.DateAcquired[0], command.DateAcquired[1], command.DateAcquired[2]), actualConsumerBottle.DateAcquired);
+                Assert.Equal(new DateTime(command.DateOpened[0], command.DateOpened[1], command.DateOpened[2]), actualConsumerBottle.DateOpened);
                 Assert.Equal(command.Owned, actualConsumerBottle.Owned);
                 Assert.Equal(command.PricePaid, actualConsumerBottle.PricePaid);
                 Assert.Equal(command.Qty, actualConsumerBottle.Qty);
