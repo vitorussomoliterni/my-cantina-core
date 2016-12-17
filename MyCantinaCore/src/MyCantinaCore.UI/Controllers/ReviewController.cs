@@ -178,5 +178,24 @@ namespace MyCantinaCore.UI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        // DELETE: api / Reviews / Id
+        [HttpDelete("Reviews/{Id}")]
+        public async Task<IActionResult> DeleteReview(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            try
+            {
+                await _reviewService.DeleteReview(id.Value);
+
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

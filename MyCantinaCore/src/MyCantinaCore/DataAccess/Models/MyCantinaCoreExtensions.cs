@@ -99,7 +99,23 @@ namespace MyCantinaCore.DataAccess.Models
                         BottleId = 1,
                         ConsumerId = 1,
                         Body = "I like this wine!",
-                        Rating = 9,
+                        Rating = 4,
+                        DatePosted = DateTime.Now
+                    },
+                    new Review()
+                    {
+                        BottleId = 2,
+                        ConsumerId = 1,
+                        Body = "OMG! So wow!",
+                        Rating = 5,
+                        DatePosted = DateTime.Now
+                    },
+                    new Review()
+                    {
+                        BottleId = 2,
+                        ConsumerId = 1,
+                        Body = "I've had better",
+                        Rating = 2,
                         DatePosted = DateTime.Now
                     },
                     new Review()
@@ -107,7 +123,7 @@ namespace MyCantinaCore.DataAccess.Models
                         BottleId = 2,
                         ConsumerId = 2,
                         Body = "This wine was okay, I guess",
-                        Rating = 6,
+                        Rating = 3,
                         DatePosted = DateTime.Now
                     });
 
