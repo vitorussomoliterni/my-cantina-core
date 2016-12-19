@@ -26,12 +26,12 @@ namespace MyCantinaCore.UI.Controllers
 
             try
             {
-                var grapeVariety = await _grapeVarietyService.GetGrapeVariety(id.Value);
-                return new ObjectResult(grapeVariety);
+                var result = await _grapeVarietyService.GetGrapeVariety(id.Value);
+                return new ObjectResult(result);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(ex);
             }
         }
 
@@ -41,12 +41,12 @@ namespace MyCantinaCore.UI.Controllers
         {
             try
             {
-                var grapeVarieties = _grapeVarietyService.GetAllGrapeVarieties().ToList();
-                return new ObjectResult(grapeVarieties);
+                var result = _grapeVarietyService.GetAllGrapeVarieties().ToList();
+                return new ObjectResult(result);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(ex);
             }
         }
 
@@ -65,7 +65,7 @@ namespace MyCantinaCore.UI.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(ex);
             }
         }
 
@@ -79,12 +79,12 @@ namespace MyCantinaCore.UI.Controllers
 
             try
             {
-                var grapeVariety = await _grapeVarietyService.AddGrapeVariety(model.Name, model.Colour);
-                return new ObjectResult(grapeVariety);
+                var result = await _grapeVarietyService.AddGrapeVariety(model.Name, model.Colour);
+                return new ObjectResult(result);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
 
@@ -98,12 +98,12 @@ namespace MyCantinaCore.UI.Controllers
 
             try
             {
-                var grapeVariety = await _grapeVarietyService.UpdateGrapeVariety(id.Value, model.Name, model.Colour);
-                return new ObjectResult(grapeVariety);
+                var result = await _grapeVarietyService.UpdateGrapeVariety(id.Value, model.Name, model.Colour);
+                return new ObjectResult(result);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
     }
