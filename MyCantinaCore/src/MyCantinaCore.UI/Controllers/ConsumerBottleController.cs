@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MyCantinaCore.UI.Controllers
 {
-    [Route("api/Consumers/{ConsumerId}/Bottles")]
+    [Route("api/ConsumerBottles")]
     public class ConsumerBottleController : Controller
     {
         private readonly ConsumerBottleApplicationService _consumerBottleService;
@@ -21,9 +21,9 @@ namespace MyCantinaCore.UI.Controllers
             _consumerBottleService = consumerBottleService;
         }
 
-        // GET: api / Consumers / ConsumerId / Bottles
-        [HttpGet]
-        public async Task<IActionResult> GetAllConsumerBottles(int? consumerId)
+        // GET: api / ConsumerBottles / ConsumerId
+        [HttpGet("{consumerId}")]
+        public async Task<IActionResult> Get(int? consumerId)
         {
             if (consumerId == null)
                 return BadRequest();
@@ -49,9 +49,9 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // GET: api / Consumers / ConsumerId / Bottles / BottleId
-        [HttpGet("{BottleId}")]
-        public async Task<IActionResult> GetConsumerBottle(int? consumerId, int? bottleId)
+        // GET: api / ConsumerBottles / ConsumerId / BottleId
+        [HttpGet("{ConsumerId}/{BottleId}")]
+        public async Task<IActionResult> Get(int? consumerId, int? bottleId)
         {
             if (consumerId == null || bottleId == null)
                 return BadRequest();
@@ -88,9 +88,9 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // POST: api / Consumers / ConsumerId / Bottles
-        [HttpPost]
-        public async Task<IActionResult> CreateBottle(int? consumerId, [FromBody] ConsumerCreateViewModel model)
+        // POST: api / ConsumerBottles / ConsumerId
+        [HttpPost("{ConsumerId}")]
+        public async Task<IActionResult> Post(int? consumerId, [FromBody] ConsumerCreateViewModel model)
         {
             if (consumerId == null || model == null)
                 return BadRequest();
@@ -118,9 +118,9 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // PUT: api / Consumers / ConsumerId / Bottles / BottleId
-        [HttpPut("{BottleId}")]
-        public async Task<IActionResult> UpdateConsumerBottle(int? consumerId, int? bottleId, [FromBody] ConsumerCreateViewModel model)
+        // PUT: api / ConsumerBottles / ConsumerId / BottleId
+        [HttpPut("{ConsumerId}/{BottleId}")]
+        public async Task<IActionResult> Put(int? consumerId, int? bottleId, [FromBody] ConsumerCreateViewModel model)
         {
             if (consumerId == null || bottleId == null || model == null)
                 return BadRequest();
@@ -148,9 +148,9 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // DELETE: api / Consumers / ConsumerId / Bottles / BottleId
-        [HttpDelete("{BottleId}")]
-        public async Task<IActionResult> DeleteConsumerBottle(int? consumerId, int? bottleId)
+        // DELETE: api / ConsumerBottles / ConsumerId / BottleId
+        [HttpDelete("{ConsumerId}/{BottleId}")]
+        public async Task<IActionResult> Delete(int? consumerId, int? bottleId)
         {
             if (consumerId == null || bottleId == null)
                 return BadRequest();

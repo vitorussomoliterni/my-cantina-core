@@ -10,7 +10,7 @@ using MyCantinaCore.Commands.Bottle;
 
 namespace MyCantinaCore.UI.Controllers
 {
-    [Route("api/bottles")]
+    [Route("api/Bottles")]
     public class BottleController : Controller
     {
         private readonly BottleApplicationService _bottleService;
@@ -22,7 +22,7 @@ namespace MyCantinaCore.UI.Controllers
 
         // GET: Bottles
         [HttpGet]
-        public async Task<IActionResult> GetAllBottles()
+        public async Task<IActionResult> Get()
         {
             try
             {
@@ -63,7 +63,7 @@ namespace MyCantinaCore.UI.Controllers
 
         // GET: Bottles / Id
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBottle(int? id)
+        public async Task<IActionResult> Get(int? id)
         {
             if (id == null)
                 return BadRequest();
@@ -101,48 +101,12 @@ namespace MyCantinaCore.UI.Controllers
             }
         }
 
-        // POST: Bottles / BottleId / GrapeVarieties / GrapeVarietyId
-        [HttpPost("{BottleId}/GrapeVarieties/{GrapeVarietyId}")]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddGrapeVarietyToBottle(int? bottleId, int? grapeVarietyId)
-        {
-            if (bottleId == null || grapeVarietyId == null)
-                return BadRequest();
-
-            try
-            {
-                var result = await _bottleService.AddGrapeVarietyToBottle(bottleId.Value, grapeVarietyId.Value);
-                return new ObjectResult(result);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex);
-            }
-        }
-
-        // DELETE: Bottles / BottleId / GrapeVarieties / GrapeVarietyId
-        [HttpDelete("{BottleId}/GrapeVarieties/{GrapeVarietyId}")]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveGrapeVarietyToBottle(int? bottleId, int? grapeVarietyId)
-        {
-            if (bottleId == null || grapeVarietyId == null)
-                return BadRequest();
-
-            try
-            {
-                var result = await _bottleService.RemoveGrapeVarietyFromBottle(bottleId.Value, grapeVarietyId.Value);
-                return new ObjectResult(result);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex);
-            }
-        }
+        // TODO: Add methods to add and remove grape varieties from bottles
 
         // POST: Bottles
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBottle([FromBody] BottleCreateViewModel model)
+        public async Task<IActionResult> Post([FromBody] BottleCreateViewModel model)
         {
             if (model == null)
                 return BadRequest();
@@ -174,7 +138,7 @@ namespace MyCantinaCore.UI.Controllers
         // PUT: Bottles / Id
         [HttpPut("{Id}")]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditBottle([FromBody] BottleUpdateViewModel model)
+        public async Task<IActionResult> Put([FromBody] BottleUpdateViewModel model)
         {
             if (model == null)
                 return BadRequest();
@@ -207,7 +171,7 @@ namespace MyCantinaCore.UI.Controllers
         // DELETE: Bottles / Id
         [HttpDelete("{Id}")]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteBottle(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
                 return BadRequest();

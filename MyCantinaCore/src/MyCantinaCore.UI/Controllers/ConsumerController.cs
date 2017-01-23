@@ -22,7 +22,7 @@ namespace MyCantinaCore.UI.Controllers
 
         // GET: api / Consumers
         [HttpGet]
-        public async Task<IActionResult> GetAllConsumers()
+        public async Task<IActionResult> Get()
         {
             try
             {
@@ -45,7 +45,7 @@ namespace MyCantinaCore.UI.Controllers
 
         // GET: api / Consumers / Id
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetConsumer(int? id)
+        public async Task<IActionResult> Get(int? id)
         {
             if (id == null)
                 return BadRequest();
@@ -73,7 +73,7 @@ namespace MyCantinaCore.UI.Controllers
 
         // POST: api / Consumers
         [HttpPost]
-        public async Task<IActionResult> CreateConsumer([FromBody] ConsumerCreateViewModel model)
+        public async Task<IActionResult> Post([FromBody] ConsumerCreateViewModel model)
         {
             if (model == null)
                 return BadRequest();
@@ -100,7 +100,7 @@ namespace MyCantinaCore.UI.Controllers
 
         // PUT: api / Consumers / {Id}
         [HttpPut("{Id}")]
-        public async Task<IActionResult> UpdateConsumer(int? id, [FromBody] ConsumerCreateViewModel model)
+        public async Task<IActionResult> Put(int? id, [FromBody] ConsumerCreateViewModel model)
         {
             if (model == null || id == null)
                 return BadRequest();
@@ -128,7 +128,7 @@ namespace MyCantinaCore.UI.Controllers
 
         // DELETE: api / Consumers / Id
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteConsumer(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
                 return BadRequest();
